@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
 function App() {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8080'); //TODO dynamically change backend url
+    ws.onmessage = (event) => {
+      if (typeof event.data === 'string') {
+        const message = JSON.parse(event.data);
+        setData(message);
+      }
+    };
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+    return () => {
+      ws.close();
+    };
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
