@@ -2,7 +2,8 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
 body {
-    font-family: 'Poppins', sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+    font-family: 'Roboto', sans-serif;
     background-color: #1F2123;
     * {
         color: #F0F3EF

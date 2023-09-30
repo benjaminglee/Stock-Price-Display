@@ -11,10 +11,13 @@ const StyledSearchBar = styled.div`
   position: relative;
 
   input {
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+    font-family: 'Roboto', sans-serif;
     max-width: 900px;
     width: 100%;
     height: 60px;
     padding: 20px;
+    padding-left: 50px;
     background-color: ${colors.lightGrey};
     font-size: 30px;
     border: none;
@@ -42,6 +45,7 @@ const StyledSearchBar = styled.div`
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     z-index: 3;
+    font-family: 'Roboto', sans-serif;
     /* box-sizing: border-box; */
   }
   .searchResult {
