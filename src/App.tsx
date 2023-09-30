@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import StockStream from './components/StockStream/StockStream';
 
 function App() {
   const [data, setData] = useState({});
@@ -46,10 +47,7 @@ function App() {
 
   return (
     <div className="App">
-      {stocks.map((stock) => (
-        <button onClick={() => setSelectedStocks([...selectedStocks, stock])} key={stock}>{stock}</button>
-      ))}
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <StockStream setSelectedStocks={setSelectedStocks} stocks={stocks} selectedStocks={selectedStocks} data={data}/>
     </div>
   );
 }
