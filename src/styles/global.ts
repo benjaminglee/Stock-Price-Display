@@ -9,11 +9,13 @@ body {
         color: #F0F3EF
     };
     ::-webkit-scrollbar {
-    width: 0px;
+    width: 10px;
+    margin-left: 4px;
 }
 
 ::-webkit-scrollbar-track {
   background-color: #09141a;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {

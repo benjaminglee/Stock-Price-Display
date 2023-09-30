@@ -6,6 +6,7 @@ const StyledChartCard = styled.div<{ positive: boolean }>`
   width: 300px;
   height: 200px;
   padding: 15px;
+  padding-top: 10px;
   border: 1px solid ${colors.lightGrey};
   border-radius: 10px;
   position: relative;
@@ -56,6 +57,10 @@ const StyledChartCard = styled.div<{ positive: boolean }>`
     cursor: pointer;
     width: 15px;
     padding: 3px;
+    color: #bbb;
+  }
+  .closeChartButton:hover {
+    color: ${colors.white};
   }
   canvas {
     width: 300px !important;

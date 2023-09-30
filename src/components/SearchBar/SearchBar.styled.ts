@@ -12,7 +12,7 @@ const StyledSearchBar = styled.div`
 
   input {
     font-family: 'Roboto', sans-serif;
-    max-width: 630px;
+    max-width: 660px;
     width: 100%;
     padding: 6px;
     padding-left: 15px;
@@ -39,8 +39,8 @@ const StyledSearchBar = styled.div`
   }
 
   .resultsContainer {
-    max-width: 630px;
-    max-height: 300px;
+    max-width: 700px;
+    max-height: 325px;
     overflow-y: auto;
     width: 80%;
     position: absolute;
@@ -59,7 +59,7 @@ const StyledSearchBar = styled.div`
     min-height: 50px;
     max-width: 100%; /* Adjusted to prevent horizontal overflow */
     width: 100%;
-    background-color: ${colors.mediumGrey};
+    background-color: #4a525a;
     border-radius: 8px;
     margin-top: 8px;
     display: flex;

@@ -109,7 +109,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
     <StyledChartCard positive={positive}>
       <div className="chartBackground">
         <div className="closeChartButton" onClick={() => handleRemoveStock(symbol)}>
-          X
+          ✕
         </div>
         <div style={{ width: '240px !important', height: '150px !important' }}>
           <Line data={initialData} ref={chartRef} options={options} />
