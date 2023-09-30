@@ -6,6 +6,7 @@ function App() {
   const [stocks, setStocks] = useState<[string, number][]>([]);
   const [selectedStocks, setSelectedStocks] = useState<string[]>([]);
   const [historicalData, setHistoricalData] = useState<{ [symbol: string]: number[] }>({});
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const handleAddResult = (symbol: any) => {
     if (!selectedStocks.includes(symbol)) {
@@ -32,14 +33,20 @@ function App() {
       });
   }, []);
 
-  useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080'); // TODO: dynamically change backend URL
+  function createWebSocket(selectedStocks: any, setHistoricalData: any) {
+    const ws = new WebSocket('ws://localhost:8080'); // Replace with your WebSocket URL
+
+    ws.onopen = () => {
+      console.log('WebSocket connection established');
+      setShowErrorPopup(false);
+      ws.send(JSON.stringify(selectedStocks));
+    };
 
     ws.onmessage = (event) => {
+      // Handle incoming messages here
       if (typeof event.data === 'string') {
         const message = JSON.parse(event.data);
-        // console.log(message);
-        setHistoricalData((prevData) => {
+        setHistoricalData((prevData: any) => {
           const newData = { ...prevData };
           for (const symbol in message) {
             if (newData[symbol]) {
@@ -57,15 +64,30 @@ function App() {
       console.error('WebSocket error:', error);
     };
 
-    ws.onopen = () => {
-      console.log('stocks from open', selectedStocks);
-      ws.send(JSON.stringify(selectedStocks));
+    ws.onclose = (event) => {
+      if (event.wasClean) {
+        console.log(`WebSocket closed cleanly, code=${event.code}, reason=${event.reason}`);
+      } else {
+        setShowErrorPopup(true);
+        console.error(`WebSocket connection lost: code=${event.code}, reason=${event.reason}`);
+        // Implement your reconnection logic here
+        setTimeout(() => {
+          console.log('Reconnecting...');
+          createWebSocket(selectedStocks, setHistoricalData); // Attempt to create a new WebSocket connection
+        }, 5000); // Retry every 5 seconds (adjust as needed)
+      }
     };
+
+    return ws;
+  }
+
+  useEffect(() => {
+    const ws = createWebSocket(selectedStocks, setHistoricalData);
 
     return () => {
       ws.close();
     };
-  }, [selectedStocks]);
+  }, [selectedStocks, setHistoricalData]);
 
   return (
     <div className="App">
