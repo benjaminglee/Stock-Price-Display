@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 interface StockStreamProps {
   historicalData: any;
-  stocks: string[];
+  stocks: [string, number][];
   selectedStocks: string[];
   handleRemoveStock: any;
   setSelectedStocks: React.Dispatch<React.SetStateAction<string[]>>;
@@ -19,12 +19,13 @@ const StockStream = ({
   historicalData,
   setHistoricalData,
   selectedStocks,
+  stocks,
 }: StockStreamProps) => {
   const stocksArr = Object.entries(historicalData);
   //   useEffect(() => console.log(historicalData), [historicalData]);
   return (
     <StyledStockStream>
-      <SearchBar setHistoricalData={setHistoricalData} handleAddResult={handleAddResult} />
+      <SearchBar setHistoricalData={setHistoricalData} stocks={stocks} handleAddResult={handleAddResult} />
       {!!stocksArr.length &&
         stocksArr
           .filter((symbol) => selectedStocks.includes(symbol[0]))

@@ -3,11 +3,12 @@ import axios from 'axios';
 import StockStream from './components/StockStream/StockStream';
 
 function App() {
-  const [stocks, setStocks] = useState<string[]>([]);
+  const [stocks, setStocks] = useState<[string, number][]>([]);
   const [selectedStocks, setSelectedStocks] = useState<string[]>([]);
   const [historicalData, setHistoricalData] = useState<{ [symbol: string]: number[] }>({});
 
   const handleAddResult = (symbol: any) => {
+    console.log(symbol, 'in function');
     if (!selectedStocks.includes(symbol)) {
       setSelectedStocks([...selectedStocks, symbol]);
     }
@@ -25,11 +26,7 @@ function App() {
     axios
       .get('http://localhost:8080/api/stocks') // TODO: dynamically change backend URL
       .then((response) => {
-        const result = [];
-        for (let symbol in response.data) {
-          result.push(symbol);
-        }
-        setStocks([...result]);
+        setStocks(response.data);
       })
       .catch((error) => {
         console.error('Error fetching stocks:', error);

@@ -1,16 +1,38 @@
 import StyledSearchBar from './SearchBar.styled';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import debounce from 'lodash.debounce';
 import { Stocks } from '../../interfaces';
 import axios from 'axios';
 
 interface SearchBarProps {
   handleAddResult: any;
+  stocks: [string, number][];
   setHistoricalData: any;
 }
-const SearchBar = ({ handleAddResult, setHistoricalData }: SearchBarProps) => {
+const SearchBar = ({ handleAddResult, stocks, setHistoricalData }: SearchBarProps) => {
   const [query, setQuery] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const searchContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      if (searchContainerRef.current && !searchContainerRef.current?.contains(event.target)) {
+        setIsVisible(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleFocus = () => {
+    setIsVisible(true);
+    console.log(stocks);
+    if (query === '') setSearchResults(stocks);
+  };
 
   const handleSearch = async (query: string) => {
     try {
@@ -22,6 +44,7 @@ const SearchBar = ({ handleAddResult, setHistoricalData }: SearchBarProps) => {
   };
 
   const handleInputChange = (event: any) => {
+    setIsVisible(true);
     const newQuery = event.target.value;
     if (newQuery === '') {
       setQuery('');
@@ -38,29 +61,38 @@ const SearchBar = ({ handleAddResult, setHistoricalData }: SearchBarProps) => {
 
   return (
     <StyledSearchBar>
-      <input type="text" placeholder="Search stocks..." value={query} onChange={handleInputChange} />
-      <div className="resultsContainer">
-        {searchResults.map((result) => {
-          return (
-            <div
-              className="searchResult"
-              key={'index_' + result.symbol}
-              onClick={() => {
-                handleAddResult(result.symbol);
-                setQuery('');
-                setSearchResults([]);
-                setHistoricalData((prevData: any) => {
-                  const newData = { ...prevData };
-                  newData[result.symbol] = [null, null, null, null];
-                  return newData;
-                });
-              }}
-            >
-              <div className="symbol">{result.symbol}</div>
-              <div className="price">{result.price}</div>
-            </div>
-          );
-        })}
+      <div className="backdrop">
+        <input
+          type="text"
+          placeholder="Search stocks by symbol"
+          value={query}
+          onChange={handleInputChange}
+          onFocus={handleFocus}
+        />
+        <div className="resultsContainer" ref={searchContainerRef}>
+          {isVisible &&
+            searchResults.map((result) => {
+              return (
+                <div
+                  className="searchResult"
+                  key={'index_' + result.symbol}
+                  onClick={() => {
+                    handleAddResult(result.symbol);
+                    setQuery('');
+                    setSearchResults([]);
+                    setHistoricalData((prevData: any) => {
+                      const newData = { ...prevData };
+                      newData[result.symbol] = [null, null, null, null];
+                      return newData;
+                    });
+                  }}
+                >
+                  <div className="symbol">{result.symbol}</div>
+                  <div className="price">{result.price}</div>
+                </div>
+              );
+            })}
+        </div>
       </div>
     </StyledSearchBar>
   );
