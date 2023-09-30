@@ -39,7 +39,7 @@ const StyledSearchBar = styled.div`
   }
 
   .resultsContainer {
-    max-width: 700px;
+    max-width: 680px;
     max-height: 325px;
     overflow-y: auto;
     width: 80%;
@@ -57,8 +57,8 @@ const StyledSearchBar = styled.div`
   .searchResult {
     height: 50px;
     min-height: 50px;
-    max-width: 100%; /* Adjusted to prevent horizontal overflow */
     width: 100%;
+    max-width: 100%; /* Adjusted to prevent horizontal overflow */
     background-color: #4a525a;
     border-radius: 8px;
     margin-top: 8px;
