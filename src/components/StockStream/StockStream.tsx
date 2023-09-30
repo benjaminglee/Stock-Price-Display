@@ -7,18 +7,30 @@ interface StockStreamProps {
   historicalData: any;
   stocks: string[];
   selectedStocks: string[];
+  handleRemoveStock: any;
   setSelectedStocks: React.Dispatch<React.SetStateAction<string[]>>;
+  setHistoricalData: any;
   handleAddResult: any;
 }
 
-const StockStream = ({ handleAddResult, historicalData }: StockStreamProps) => {
+const StockStream = ({
+  handleAddResult,
+  handleRemoveStock,
+  historicalData,
+  setHistoricalData,
+  selectedStocks,
+}: StockStreamProps) => {
   const stocksArr = Object.entries(historicalData);
   //   useEffect(() => console.log(historicalData), [historicalData]);
   return (
     <StyledStockStream>
-      <SearchBar handleAddResult={handleAddResult} />
+      <SearchBar setHistoricalData={setHistoricalData} handleAddResult={handleAddResult} />
       {!!stocksArr.length &&
-        stocksArr.map((symbol) => <ChartCard key={symbol} symbol={symbol[0]} data={historicalData} />)}
+        stocksArr
+          .filter((symbol) => selectedStocks.includes(symbol[0]))
+          .map((symbol) => (
+            <ChartCard key={symbol} symbol={symbol[0]} data={historicalData} handleRemoveStock={handleRemoveStock} />
+          ))}
     </StyledStockStream>
   );
 };

@@ -5,7 +5,7 @@ import StyledChartCard from './ChartCard.styled';
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-const ChartCard = ({ symbol, data }: any) => {
+const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
   console.log(symbol, 'symbol');
 
   const [chartData, setChartData] = useState<any>({
@@ -54,7 +54,9 @@ const ChartCard = ({ symbol, data }: any) => {
 
   return (
     <StyledChartCard>
+      <div onClick={() => handleRemoveStock(symbol)}>X</div>
       <Line data={chartData} options={options} />
+      <div>{symbol}</div>
     </StyledChartCard>
   );
 };

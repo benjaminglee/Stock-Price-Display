@@ -6,8 +6,9 @@ import axios from 'axios';
 
 interface SearchBarProps {
   handleAddResult: any;
+  setHistoricalData: any;
 }
-const SearchBar = ({ handleAddResult }: SearchBarProps) => {
+const SearchBar = ({ handleAddResult, setHistoricalData }: SearchBarProps) => {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -48,6 +49,11 @@ const SearchBar = ({ handleAddResult }: SearchBarProps) => {
                 handleAddResult(result.symbol);
                 setQuery('');
                 setSearchResults([]);
+                setHistoricalData((prevData: any) => {
+                  const newData = { ...prevData };
+                  newData[result.symbol] = [null, null, null, null];
+                  return newData;
+                });
               }}
             >
               <div className="symbol">{result.symbol}</div>

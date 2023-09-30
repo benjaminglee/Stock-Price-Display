@@ -13,6 +13,13 @@ function App() {
     }
   };
 
+  const handleRemoveStock = (symbol: any) => {
+    if (selectedStocks.includes(symbol)) {
+      setSelectedStocks(selectedStocks.filter((stock) => stock !== symbol));
+    }
+    console.log(symbol);
+  };
+
   useEffect(() => {
     // Fetch stocks from backend API
     axios
@@ -71,6 +78,8 @@ function App() {
         stocks={stocks}
         selectedStocks={selectedStocks}
         historicalData={historicalData}
+        setHistoricalData={setHistoricalData}
+        handleRemoveStock={handleRemoveStock}
       />
     </div>
   );
