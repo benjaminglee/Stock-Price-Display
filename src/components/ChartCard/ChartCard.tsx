@@ -6,8 +6,12 @@ import StyledChartCard from './ChartCard.styled';
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
+  const pointsArr: string[] = [];
+  for (let i = 1; i <= 100; i++) {
+    pointsArr.push(`${i}`);
+  }
   const [chartData, setChartData] = useState<any>({
-    labels: ['1', '2', '3', '4', '5'],
+    labels: pointsArr,
     datasets: [
       {
         labels: `${symbol}`,
@@ -18,7 +22,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
     ],
   });
   const [initialData, setInitialData] = useState<any>({
-    labels: ['1', '2', '3', '4', '5'],
+    labels: pointsArr,
     datasets: [
       {
         labels: `${symbol}`,
@@ -33,7 +37,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
 
   useEffect(() => {
     const chartData = {
-      labels: ['1', '2', '3', '4', '5'],
+      labels: pointsArr,
       datasets: [
         {
           labels: `${symbol}`,
@@ -51,7 +55,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
 
   useEffect(() => {
     setInitialData({
-      labels: ['1', '2', '3', '4', '5'],
+      labels: pointsArr,
       datasets: [
         {
           labels: `${symbol}`,

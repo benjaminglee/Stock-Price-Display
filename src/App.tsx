@@ -52,7 +52,8 @@ function App() {
             if (newData[symbol]) {
               newData[symbol].push(message[symbol]);
             } else {
-              newData[symbol] = [null, null, null, null, message[symbol]];
+              const emptyArr = new Array(99).fill(null);
+              newData[symbol] = [...emptyArr, message[symbol]];
             }
           }
           return newData;
