@@ -10,12 +10,13 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
   for (let i = 1; i <= 100; i++) {
     pointsArr.push(`${i}`);
   }
+  console.log(data[symbol]);
   const [chartData, setChartData] = useState<any>({
     labels: pointsArr,
     datasets: [
       {
         labels: `${symbol}`,
-        data: data[symbol].slice(-5), // Array of numbers representing stock prices
+        data: data[symbol], // Array of numbers representing stock prices
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'aqua',
       },
@@ -41,7 +42,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
       datasets: [
         {
           labels: `${symbol}`,
-          data: data[symbol].slice(-5), // Array of numbers representing stock prices
+          data: data[symbol], // Array of numbers representing stock prices
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'aqua',
         },
@@ -59,9 +60,11 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
       datasets: [
         {
           labels: `${symbol}`,
-          data: data[symbol].slice(-5), // Array of numbers representing stock prices
+          data: data[symbol], // Array of numbers representing stock prices
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'aqua',
+          // pointRadius: 0,
+          // borderWidth: 2,
         },
       ],
     });
