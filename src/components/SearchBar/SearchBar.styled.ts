@@ -11,29 +11,35 @@ const StyledSearchBar = styled.div`
   position: relative;
 
   input {
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
     font-family: 'Roboto', sans-serif;
-    max-width: 900px;
+    max-width: 630px;
     width: 100%;
-    height: 40px;
-    padding: 20px;
-    padding-left: 50px;
-    background-color: ${colors.lightGrey};
+    padding: 6px;
+    padding-left: 15px;
+    background-color: #343a40;
     font-size: 22px;
     border: none;
-    border-radius: 40px;
+    border-radius: 6px;
+    height: 50px;
+    color: ${colors.white}; /* Text color set to white */
+
+    &::placeholder {
+      color: ${colors.lightGrey};
+    }
 
     &:focus {
       outline: none;
     }
   }
+
   .backdrop {
     width: 80%;
     display: flex;
     justify-content: center;
   }
+
   .resultsContainer {
-    max-width: 900px;
+    max-width: 630px;
     max-height: 300px;
     overflow-y: auto;
     width: 80%;
@@ -46,8 +52,8 @@ const StyledSearchBar = styled.div`
     border-bottom-right-radius: 10px;
     z-index: 3;
     font-family: 'Roboto', sans-serif;
-    /* box-sizing: border-box; */
   }
+
   .searchResult {
     height: 50px;
     min-height: 50px;

@@ -3,15 +3,15 @@ import { colors } from '../../styles/constants';
 
 const StyledChartCard = styled.div<{ positive: boolean }>`
   z-index: 2;
-  width: 240px;
-  height: 240px;
+  width: 300px;
+  height: 200px;
   padding: 15px;
   border: 1px solid ${colors.lightGrey};
   border-radius: 10px;
   position: relative;
 
   .chartBackground {
-    width: 240px;
+    width: 300px;
     height: 200px;
   }
   .stockInformationContainer {
@@ -56,6 +56,10 @@ const StyledChartCard = styled.div<{ positive: boolean }>`
     cursor: pointer;
     width: 15px;
     padding: 3px;
+  }
+  canvas {
+    width: 300px !important;
+    height: 150px !important;
   }
 `;
 
