@@ -5,29 +5,37 @@ import StockStream from './components/StockStream/StockStream';
 function App() {
   const [data, setData] = useState({});
   const [stocks, setStocks] = useState<string[]>([]);
-  const [selectedStocks, setSelectedStocks] = useState<string[]>([])
+  const [selectedStocks, setSelectedStocks] = useState<string[]>([]);
+
+  const handleAddResult = (symbol: any) => {
+    if (!selectedStocks.includes(symbol)) {
+      setSelectedStocks([...selectedStocks, symbol]);
+    }
+  };
 
   useEffect(() => {
-    //fetch stocks from backend api
-    axios.get('http://localhost:8080/api/stocks') //TODO dynamically change backend url
-    .then((response) => {
-      const result = [];
-      for(let symbol in response.data) {
-        result.push(symbol);
-      }
-      setStocks([...result]);
-    })
-    .catch((error) => {
-      console.error('Error fetching stocks:', error);
-    });
-  }, [])
+    // Fetch stocks from backend API
+    axios
+      .get('http://localhost:8080/api/stocks') // TODO: dynamically change backend URL
+      .then((response) => {
+        const result = [];
+        for (let symbol in response.data) {
+          result.push(symbol);
+        }
+        setStocks([...result]);
+      })
+      .catch((error) => {
+        console.error('Error fetching stocks:', error);
+      });
+  }, []);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080'); //TODO dynamically change backend url
+    const ws = new WebSocket('ws://localhost:8080'); // TODO: dynamically change backend URL
 
     ws.onmessage = (event) => {
       if (typeof event.data === 'string') {
         const message = JSON.parse(event.data);
+        console.log(message);
         setData(message);
       }
     };
@@ -47,7 +55,13 @@ function App() {
 
   return (
     <div className="App">
-      <StockStream setSelectedStocks={setSelectedStocks} stocks={stocks} selectedStocks={selectedStocks} data={data}/>
+      <StockStream
+        handleAddResult={handleAddResult}
+        setSelectedStocks={setSelectedStocks}
+        stocks={stocks}
+        selectedStocks={selectedStocks}
+        data={data}
+      />
     </div>
   );
 }

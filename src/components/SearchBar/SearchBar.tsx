@@ -1,43 +1,59 @@
-import StyledSearchBar from "./SearchBar.styled"
+import StyledSearchBar from './SearchBar.styled';
 import React, { useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Stocks } from "../../interfaces";
+import { Stocks } from '../../interfaces';
+import axios from 'axios';
 
 interface SearchBarProps {
-    stocks: Stocks,
-    onSearch: (query: string) => void;
+  handleAddResult: any;
 }
-const SearchBar = ({ stocks, onSearch }:SearchBarProps) => {
+const SearchBar = ({ handleAddResult }: SearchBarProps) => {
   const [query, setQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
 
-  const handleInputChange = (event:any) => {
+  const handleSearch = async (query: string) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/search?q=${query}`);
+      setSearchResults(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleInputChange = (event: any) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
     debouncedSearch(newQuery);
   };
 
   const debouncedSearch = debounce((value) => {
-    onSearch(value);
+    handleSearch(value);
   }, 300);
 
-const SearchBar = () => {
-    return (
-        <StyledSearchBar>
-             <input
-                type="text"
-                placeholder="Search stocks..."
-                value={query}
-                onChange={handleInputChange}
-            />
-            <ul>
-                {stocks
-                .filter((stock) => stock.includes(query))
-                .map((stock, index) => (
-                    <li key={index}>{stock}</li>
-                ))}
-            </ul>
-        </StyledSearchBar>
-    )
-}
+  return (
+    <StyledSearchBar>
+      <input type="text" placeholder="Search stocks..." value={query} onChange={handleInputChange} />
+      <div className="resultsContainer">
+        {searchResults.map((result) => {
+          return (
+            <div
+              className="searchResult"
+              key={'index_' + result.symbol}
+              onClick={() => {
+                handleAddResult(result.symbol);
+                setQuery('');
+                setSearchResults([]);
+              }}
+            >
+              <div className="symbol">{result.symbol}</div>
+              <div className="price">{result.price}</div>
+            </div>
+          );
+        })}
+      </div>
+    </StyledSearchBar>
+  );
+};
 
-export default SearchBar
+export default SearchBar;

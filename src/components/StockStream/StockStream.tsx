@@ -1,25 +1,30 @@
-import StyledStockStream from "./StockStream.styled";
+import StyledStockStream from './StockStream.styled';
+import SearchBar from '../SearchBar/SearchBar';
 
 interface Stocks {
-    [key: string]: number;
-  }
+  [key: string]: number;
+}
 
 interface StockStreamProps {
-    data:Stocks,
-    stocks:string[],
-    selectedStocks: string[],
-    setSelectedStocks: React.Dispatch<React.SetStateAction<string[]>>;
-  }
-
-const StockStream = ({selectedStocks, data, stocks, setSelectedStocks}: StockStreamProps) => {
-    return (
-    <StyledStockStream>
-         {stocks.map((stock) => (
-        <button onClick={() => setSelectedStocks([...selectedStocks, stock])} key={stock}>{stock}</button>
-      ))}
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </StyledStockStream>
-    )
+  data: Stocks;
+  stocks: string[];
+  selectedStocks: string[];
+  setSelectedStocks: React.Dispatch<React.SetStateAction<string[]>>;
+  handleAddResult: any;
 }
+
+const StockStream = ({ handleAddResult, selectedStocks, data, stocks, setSelectedStocks }: StockStreamProps) => {
+  const stocksArr = Object.entries(data);
+  return (
+    <StyledStockStream>
+      <SearchBar handleAddResult={handleAddResult} />
+      {stocksArr.map(([symbol, price]) => (
+        <div>
+          {symbol} {price}
+        </div>
+      ))}
+    </StyledStockStream>
+  );
+};
 
 export default StockStream;
