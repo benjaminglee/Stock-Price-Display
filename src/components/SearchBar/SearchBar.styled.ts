@@ -15,11 +15,11 @@ const StyledSearchBar = styled.div`
     font-family: 'Roboto', sans-serif;
     max-width: 900px;
     width: 100%;
-    height: 60px;
+    height: 40px;
     padding: 20px;
     padding-left: 50px;
     background-color: ${colors.lightGrey};
-    font-size: 30px;
+    font-size: 22px;
     border: none;
     border-radius: 40px;
 

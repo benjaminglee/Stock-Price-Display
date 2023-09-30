@@ -5,10 +5,10 @@ const StyledChartCard = styled.div<{ positive: boolean }>`
   z-index: 2;
   width: 240px;
   height: 240px;
-  margin-top: 30px;
   padding: 15px;
   border: 1px solid ${colors.lightGrey};
   border-radius: 10px;
+  position: relative;
 
   .chartBackground {
     width: 240px;
@@ -18,8 +18,12 @@ const StyledChartCard = styled.div<{ positive: boolean }>`
     display: flex;
     align-items: 'center';
     width: 100%;
-    position: relative;
+    position: absolute;
     justify-content: space-between;
+    margin-top: 5px;
+    padding-bottom: 10px;
+    bottom: 0;
+    left: 0;
   }
   .priceDifference {
     width: 33%;
@@ -41,10 +45,12 @@ const StyledChartCard = styled.div<{ positive: boolean }>`
   }
   .symbol {
     width: 33%;
+    padding-left: 10px;
   }
   .stockPrice {
     width: 33%;
     text-align: end;
+    padding-right: 10px;
   }
   .closeChartButton {
     cursor: pointer;

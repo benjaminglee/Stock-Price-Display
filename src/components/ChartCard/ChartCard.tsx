@@ -7,7 +7,7 @@ ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
   const [chartData, setChartData] = useState<any>({
-    labels: ['day1', 'day2', 'day3', 'day 4', 'day5'],
+    labels: ['1', '2', '3', '4', '5'],
     datasets: [
       {
         labels: `${symbol}`,

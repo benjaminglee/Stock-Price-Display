@@ -6,8 +6,8 @@ import axios from 'axios';
 
 interface SearchBarProps {
   handleAddResult: any;
-  stocks: [string, number][];
   setHistoricalData: any;
+  stocks: any;
   selectedStocks: string[];
 }
 const SearchBar = ({ handleAddResult, selectedStocks, stocks, setHistoricalData }: SearchBarProps) => {
@@ -31,7 +31,10 @@ const SearchBar = ({ handleAddResult, selectedStocks, stocks, setHistoricalData 
 
   const handleFocus = () => {
     setIsVisible(true);
-    if (query === '') setSearchResults(stocks);
+    console.log(stocks, 'stocks');
+    const filteredStocks = stocks.filter((stock: any) => !selectedStocks.includes(stock.symbol));
+    console.log(filteredStocks);
+    if (query === '') setSearchResults(filteredStocks);
   };
 
   const handleSearch = async (query: string) => {
@@ -51,7 +54,7 @@ const SearchBar = ({ handleAddResult, selectedStocks, stocks, setHistoricalData 
       setSearchResults([]);
       return;
     }
-    setQuery(newQuery);
+    setQuery(newQuery.toUpperCase());
     debouncedSearch(newQuery);
   };
 

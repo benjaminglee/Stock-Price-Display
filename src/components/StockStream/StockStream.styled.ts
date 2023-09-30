@@ -10,11 +10,13 @@ const StyledStockStream = styled.div`
 
   .chartCardContainer {
     width: 80%;
+    max-width: 900px;
     display: flex;
     align-self: center;
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
+    margin-top: 30px;
   }
 `;
 
