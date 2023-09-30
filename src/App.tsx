@@ -8,7 +8,6 @@ function App() {
   const [historicalData, setHistoricalData] = useState<{ [symbol: string]: number[] }>({});
 
   const handleAddResult = (symbol: any) => {
-    console.log(symbol, 'in function');
     if (!selectedStocks.includes(symbol)) {
       setSelectedStocks([...selectedStocks, symbol]);
     }
@@ -39,7 +38,7 @@ function App() {
     ws.onmessage = (event) => {
       if (typeof event.data === 'string') {
         const message = JSON.parse(event.data);
-        console.log(message);
+        // console.log(message);
         setHistoricalData((prevData) => {
           const newData = { ...prevData };
           for (const symbol in message) {
@@ -59,6 +58,7 @@ function App() {
     };
 
     ws.onopen = () => {
+      console.log('stocks from open', selectedStocks);
       ws.send(JSON.stringify(selectedStocks));
     };
 

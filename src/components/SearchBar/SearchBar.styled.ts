@@ -39,9 +39,11 @@ const StyledSearchBar = styled.div`
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    z-index: 3;
     /* box-sizing: border-box; */
   }
-
   .searchResult {
     height: 50px;
     min-height: 50px;
@@ -56,7 +58,7 @@ const StyledSearchBar = styled.div`
     padding: 0 16px;
     font-size: 20px;
     cursor: pointer;
-    z-index: 3;
+    z-index: 4;
     box-sizing: border-box;
 
     &:hover {

@@ -8,8 +8,9 @@ interface SearchBarProps {
   handleAddResult: any;
   stocks: [string, number][];
   setHistoricalData: any;
+  selectedStocks: string[];
 }
-const SearchBar = ({ handleAddResult, stocks, setHistoricalData }: SearchBarProps) => {
+const SearchBar = ({ handleAddResult, selectedStocks, stocks, setHistoricalData }: SearchBarProps) => {
   const [query, setQuery] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -30,7 +31,6 @@ const SearchBar = ({ handleAddResult, stocks, setHistoricalData }: SearchBarProp
 
   const handleFocus = () => {
     setIsVisible(true);
-    console.log(stocks);
     if (query === '') setSearchResults(stocks);
   };
 
@@ -77,9 +77,10 @@ const SearchBar = ({ handleAddResult, stocks, setHistoricalData }: SearchBarProp
                   className="searchResult"
                   key={'index_' + result.symbol}
                   onClick={() => {
-                    handleAddResult(result.symbol);
                     setQuery('');
                     setSearchResults([]);
+                    if (selectedStocks.includes(result.symbol)) return;
+                    handleAddResult(result.symbol);
                     setHistoricalData((prevData: any) => {
                       const newData = { ...prevData };
                       newData[result.symbol] = [null, null, null, null];

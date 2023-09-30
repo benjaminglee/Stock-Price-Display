@@ -21,17 +21,28 @@ const StockStream = ({
   selectedStocks,
   stocks,
 }: StockStreamProps) => {
-  const stocksArr = Object.entries(historicalData);
+  const cardArray = [];
+
+  for (let stock of selectedStocks) {
+    cardArray.push([stock, historicalData[stock]]);
+  }
   //   useEffect(() => console.log(historicalData), [historicalData]);
   return (
     <StyledStockStream>
-      <SearchBar setHistoricalData={setHistoricalData} stocks={stocks} handleAddResult={handleAddResult} />
-      {!!stocksArr.length &&
-        stocksArr
-          .filter((symbol) => selectedStocks.includes(symbol[0]))
-          .map((symbol) => (
-            <ChartCard key={symbol} symbol={symbol[0]} data={historicalData} handleRemoveStock={handleRemoveStock} />
-          ))}
+      <SearchBar
+        selectedStocks={selectedStocks}
+        setHistoricalData={setHistoricalData}
+        stocks={stocks}
+        handleAddResult={handleAddResult}
+      />
+      <div className="chartCardContainer">
+        {!!cardArray.length &&
+          cardArray
+            .filter((symbol) => selectedStocks.includes(symbol[0]))
+            .map((symbol) => (
+              <ChartCard key={symbol} symbol={symbol[0]} data={historicalData} handleRemoveStock={handleRemoveStock} />
+            ))}
+      </div>
     </StyledStockStream>
   );
 };
