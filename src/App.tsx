@@ -3,9 +3,9 @@ import axios from 'axios';
 import StockStream from './components/StockStream/StockStream';
 
 function App() {
-  const [data, setData] = useState({});
   const [stocks, setStocks] = useState<string[]>([]);
   const [selectedStocks, setSelectedStocks] = useState<string[]>([]);
+  const [historicalData, setHistoricalData] = useState<{ [symbol: string]: number[] }>({});
 
   const handleAddResult = (symbol: any) => {
     if (!selectedStocks.includes(symbol)) {
@@ -36,7 +36,17 @@ function App() {
       if (typeof event.data === 'string') {
         const message = JSON.parse(event.data);
         console.log(message);
-        setData(message);
+        setHistoricalData((prevData) => {
+          const newData = { ...prevData };
+          for (const symbol in message) {
+            if (newData[symbol]) {
+              newData[symbol].push(message[symbol]);
+            } else {
+              newData[symbol] = [null, null, null, null, message[symbol]];
+            }
+          }
+          return newData;
+        });
       }
     };
 
@@ -60,7 +70,7 @@ function App() {
         setSelectedStocks={setSelectedStocks}
         stocks={stocks}
         selectedStocks={selectedStocks}
-        data={data}
+        historicalData={historicalData}
       />
     </div>
   );

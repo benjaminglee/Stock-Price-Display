@@ -15,7 +15,6 @@ const SearchBar = ({ handleAddResult }: SearchBarProps) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/search?q=${query}`);
       setSearchResults(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -23,6 +22,11 @@ const SearchBar = ({ handleAddResult }: SearchBarProps) => {
 
   const handleInputChange = (event: any) => {
     const newQuery = event.target.value;
+    if (newQuery === '') {
+      setQuery('');
+      setSearchResults([]);
+      return;
+    }
     setQuery(newQuery);
     debouncedSearch(newQuery);
   };

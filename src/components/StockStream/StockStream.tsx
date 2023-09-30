@@ -1,28 +1,24 @@
 import StyledStockStream from './StockStream.styled';
 import SearchBar from '../SearchBar/SearchBar';
-
-interface Stocks {
-  [key: string]: number;
-}
+import ChartCard from '../ChartCard/ChartCard';
+import { useEffect } from 'react';
 
 interface StockStreamProps {
-  data: Stocks;
+  historicalData: any;
   stocks: string[];
   selectedStocks: string[];
   setSelectedStocks: React.Dispatch<React.SetStateAction<string[]>>;
   handleAddResult: any;
 }
 
-const StockStream = ({ handleAddResult, selectedStocks, data, stocks, setSelectedStocks }: StockStreamProps) => {
-  const stocksArr = Object.entries(data);
+const StockStream = ({ handleAddResult, historicalData }: StockStreamProps) => {
+  const stocksArr = Object.entries(historicalData);
+  //   useEffect(() => console.log(historicalData), [historicalData]);
   return (
     <StyledStockStream>
       <SearchBar handleAddResult={handleAddResult} />
-      {stocksArr.map(([symbol, price]) => (
-        <div>
-          {symbol} {price}
-        </div>
-      ))}
+      {!!stocksArr.length &&
+        stocksArr.map((symbol) => <ChartCard key={symbol} symbol={symbol[0]} data={historicalData} />)}
     </StyledStockStream>
   );
 };
