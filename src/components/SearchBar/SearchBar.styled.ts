@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { colors } from '../../styles/constants';
 
-const StyledSearchBar = styled.div`
+const StyledSearchBar = styled.div<{ searchResultSizeSmall: boolean }>`
   margin-top: 40px;
   width: 100%;
   display: flex;
@@ -57,8 +57,7 @@ const StyledSearchBar = styled.div`
   .searchResult {
     height: 50px;
     min-height: 50px;
-    width: 100%;
-    max-width: 100%; /* Adjusted to prevent horizontal overflow */
+    width: ${(p) => (p.searchResultSizeSmall ? '99%' : '100%')};
     background-color: #4a525a;
     border-radius: 8px;
     margin-top: 8px;

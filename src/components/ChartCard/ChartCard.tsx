@@ -10,7 +10,6 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
   for (let i = 1; i <= 100; i++) {
     pointsArr.push(`${i}`);
   }
-  console.log(data[symbol]);
   const [chartData, setChartData] = useState<any>({
     labels: pointsArr,
     datasets: [

@@ -62,8 +62,10 @@ const SearchBar = ({ handleAddResult, selectedStocks, stocks, setHistoricalData 
     handleSearch(value);
   }, 300);
 
+  const searchResultSizeSmall = searchResults.length > 5;
+
   return (
-    <StyledSearchBar>
+    <StyledSearchBar searchResultSizeSmall={searchResultSizeSmall}>
       <div className="backdrop">
         <input
           type="text"
