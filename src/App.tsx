@@ -44,25 +44,57 @@ function App() {
       ws.send(JSON.stringify(selectedStocks));
     };
 
+    const messageQueue: any[] = []; // Define a type for your messageQueue array
+
     ws.onmessage = (event) => {
       // Handle incoming messages here
       if (typeof event.data === 'string') {
-        const message = JSON.parse(event.data);
+        const message: { [symbol: string]: number } = JSON.parse(event.data); // Define a type for your message object
+        messageQueue.push(message); // Add the message to the queue
+      }
+    };
+
+    // Use a timer to process the messages after a delay
+    let processingTimer: NodeJS.Timeout | null = null; // Define a type for your timer
+
+    function processQueuedMessages() {
+      if (messageQueue.length > 0) {
+        // Aggregate data from all messages in the queue
+        const aggregatedData: { [symbol: string]: number[] } = {}; // Define a type for your aggregatedData object
+
+        for (const message of messageQueue) {
+          for (const symbol in message) {
+            if (!aggregatedData[symbol]) {
+              aggregatedData[symbol] = [];
+            }
+            aggregatedData[symbol].push(message[symbol]);
+          }
+        }
+
+        // Update your historicalData state with the aggregated data
         setHistoricalData((prevData: any) => {
           const newData = { ...prevData };
-          for (const symbol in message) {
+          for (const symbol in aggregatedData) {
             if (newData[symbol]) {
-              newData[symbol].push(message[symbol]);
+              newData[symbol].push(...aggregatedData[symbol]);
             } else {
               const emptyArr = new Array(49).fill(null);
-              console.log('emptyArr', emptyArr);
-              newData[symbol] = [...emptyArr, message[symbol]];
+              newData[symbol] = [...emptyArr, ...aggregatedData[symbol]];
             }
           }
           return newData;
         });
+
+        // Clear the message queue
+        messageQueue.length = 0;
       }
-    };
+
+      // Set a new timer for the next processing cycle
+      processingTimer = setTimeout(processQueuedMessages, 500); // 500ms throttle duration
+    }
+
+    // Start the initial timer
+    processingTimer = setTimeout(processQueuedMessages, 500);
 
     ws.onerror = (error) => {
       console.error('WebSocket error:', error);
