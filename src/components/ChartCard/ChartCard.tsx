@@ -15,7 +15,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
     datasets: [
       {
         labels: `${symbol}`,
-        data: data[symbol], // Array of numbers representing stock prices
+        data: data[symbol].slice(-100), // Array of numbers representing stock prices
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'aqua',
       },
@@ -41,7 +41,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
       datasets: [
         {
           labels: `${symbol}`,
-          data: data[symbol], // Array of numbers representing stock prices
+          data: data[symbol].slice(-100), // Array of numbers representing stock prices
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'aqua',
         },
@@ -59,7 +59,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
       datasets: [
         {
           labels: `${symbol}`,
-          data: data[symbol], // Array of numbers representing stock prices
+          data: data[symbol].slice(-100), // Array of numbers representing stock prices
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'aqua',
           // pointRadius: 0,
