@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
 import StyledChartCard from './ChartCard.styled';
+import { colors } from '../../styles/constants';
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
   const pointsArr: string[] = [];
-  for (let i = 1; i <= 100; i++) {
+  for (let i = 1; i <= 50; i++) {
     pointsArr.push(`${i}`);
   }
   const [chartData, setChartData] = useState<any>({
@@ -15,7 +16,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
     datasets: [
       {
         labels: `${symbol}`,
-        data: data[symbol].slice(-100), // Array of numbers representing stock prices
+        data: data[symbol].slice(-50), // Array of numbers representing stock prices
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'aqua',
       },
@@ -41,7 +42,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
       datasets: [
         {
           labels: `${symbol}`,
-          data: data[symbol].slice(-100), // Array of numbers representing stock prices
+          data: data[symbol].slice(-50), // Array of numbers representing stock prices
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'aqua',
         },
@@ -59,7 +60,7 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
       datasets: [
         {
           labels: `${symbol}`,
-          data: data[symbol].slice(-100), // Array of numbers representing stock prices
+          data: data[symbol].slice(-50), // Array of numbers representing stock prices
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'aqua',
           // pointRadius: 0,
@@ -99,6 +100,27 @@ const ChartCard = ({ symbol, data, handleRemoveStock }: any) => {
     },
     responsive: false,
     maintainAspectRatio: false,
+    scales: {
+      x: {
+        beginAtZero: true, // Adjust as needed
+        maxRotation: 0,
+        minRotation: 0,
+        title: {
+          display: true,
+          text: 'Time elapsed (.5s)', // Your x-axis label
+          padding: {
+            top: -1, // Adjust top padding
+            bottom: -1, // Adjust bottom padding
+            left: 0, // Adjust left padding
+            right: 0, // Adjust right padding
+          },
+          color: colors.white, // Customize label color
+          font: {
+            size: 14, // Adjust font size as needed
+          },
+        },
+      },
+    },
   };
 
   const mostCurrentValue = data[symbol][data[symbol].length - 1];

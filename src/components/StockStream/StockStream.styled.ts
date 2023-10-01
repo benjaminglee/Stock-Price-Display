@@ -9,6 +9,7 @@ const StyledStockStream = styled.div`
   justify-content: 'center';
   align-items: 'center';
   padding-bottom: 30px;
+  overflow-x: hidden;
 
   .chartCardContainer {
     width: 80%;

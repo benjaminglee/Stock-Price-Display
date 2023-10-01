@@ -1,27 +1,20 @@
+import StyledPopup from './Popup.styled';
+import { TailSpin } from 'react-loader-spinner';
+import { colors } from '../../styles/constants';
+
 const Popup = () => {
   return (
-    <div>
-      {/* <div className='backdrop'>
-          <div className='mainContent'>
-            <div style={{ textAlign: 'center' }}>
-              <p className='message'>Lost conne</p>
-              {yesNoButton ? (
-                <div className='yesNoButtonContainer'>
-                  <button className='yesNoButton' onClick={onClose}>No</button>
-                  <button className='yesNoButton right' onClick={handleButtonClick}>Yes</button>
-                </div>
-              ) : (
-                <button className='continueButton' onClick={handleButtonClick}>
-                  {
-                    isLastMessage
-                      ? 'Done'
-                      : 'Continue'
-                  }
-                </button>
-              )}
-            </div>
+    <StyledPopup>
+      <div className="popupBackdrop">
+        <div className="mainContent">
+          Reconnecting to server...
+          <div className="spinnerWrapper">
+            <TailSpin wrapperClass="spinner" color={colors.green} />
           </div>
-        </div> */}
-    </div>
+        </div>
+      </div>
+    </StyledPopup>
   );
 };
+
+export default Popup;

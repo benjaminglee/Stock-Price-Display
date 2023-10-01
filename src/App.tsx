@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import StockStream from './components/StockStream/StockStream';
+import Popup from './components/Popup/Popup';
+import throttle from 'lodash/throttle';
 
 function App() {
   const [stocks, setStocks] = useState<[string, number][]>([]);
@@ -52,7 +54,7 @@ function App() {
             if (newData[symbol]) {
               newData[symbol].push(message[symbol]);
             } else {
-              const emptyArr = new Array(99).fill(null);
+              const emptyArr = new Array(49).fill(null);
               console.log('emptyArr', emptyArr);
               newData[symbol] = [...emptyArr, message[symbol]];
             }
@@ -76,7 +78,7 @@ function App() {
         setTimeout(() => {
           console.log('Reconnecting...');
           createWebSocket(selectedStocks, setHistoricalData); // Attempt to create a new WebSocket connection
-        }, 5000); // Retry every 5 seconds (adjust as needed)
+        }, 3000); // Retry every 5 seconds (adjust as needed)
       }
     };
 
@@ -93,6 +95,7 @@ function App() {
 
   return (
     <div className="App">
+      {showErrorPopup && <Popup />}
       <StockStream
         handleAddResult={handleAddResult}
         setSelectedStocks={setSelectedStocks}

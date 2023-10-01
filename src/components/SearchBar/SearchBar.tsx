@@ -88,7 +88,7 @@ const SearchBar = ({ handleAddResult, selectedStocks, stocks, setHistoricalData 
                     handleAddResult(result.symbol);
                     setHistoricalData((prevData: any) => {
                       const newData = { ...prevData };
-                      const emptyArr = new Array(90).fill(null);
+                      const emptyArr = new Array(49).fill(null);
                       newData[result.symbol] = [...emptyArr];
                       return newData;
                     });

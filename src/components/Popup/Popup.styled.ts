@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import { colors } from '../../styles/constants';
 
 const fadeInAnimation = keyframes`
   from {
@@ -26,13 +27,15 @@ to {
 `;
 
 const StyledPopup = styled.div`
-  .backdrop {
+  .popupBackdrop {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,14 +44,23 @@ const StyledPopup = styled.div`
   }
 
   .mainContent {
-    width: 85%;
-    max-width: 600px;
+    width: 80%;
+    max-width: 660px;
     border-radius: 12px;
-    background: white;
+    background: ${colors.darkGrey};
     padding: 40px 15px;
-    border: 2px solid rgb(232, 232, 232);
     position: relative;
     animation: ${fadeInAnimation} 0.3s ease;
+    z-index: 10;
+    color: ${colors.lightGrey};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 20px;
+  }
+  .spinner {
+    margin-top: 20px;
   }
 `;
 
