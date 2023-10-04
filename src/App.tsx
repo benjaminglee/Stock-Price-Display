@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import StockStream from './components/StockStream/StockStream';
 import Popup from './components/Popup/Popup';
-import throttle from 'lodash/throttle';
 
 function App() {
   const [stocks, setStocks] = useState<[string, number][]>([]);
@@ -35,8 +34,56 @@ function App() {
       });
   }, []);
 
+  const messageQueue: any[] = []; // Define a type for your messageQueue array
+  // Use a timer to process the messages after a delay
+  let processingTimer: NodeJS.Timeout | null = null;
+
+  function processQueuedMessages() {
+    if (processingTimer) {
+      clearTimeout(processingTimer);
+      processingTimer = null;
+    }
+    if (messageQueue.length > 0) {
+      // Aggregate data from all messages in the queue
+      const aggregatedData: { [symbol: string]: number[] } = {};
+
+      for (const message of messageQueue) {
+        for (const symbol in message) {
+          if (!aggregatedData[symbol]) {
+            aggregatedData[symbol] = [];
+          }
+          aggregatedData[symbol].push(message[symbol]);
+        }
+      }
+
+      // Update historicalData state with the aggregated data
+      setHistoricalData((prevData: any) => {
+        const newData = { ...prevData };
+        for (const symbol in aggregatedData) {
+          if (newData[symbol]) {
+            console.log(newData[symbol].length);
+            newData[symbol].push(...aggregatedData[symbol]);
+            if (newData[symbol].length > 50) newData[symbol] = newData[symbol].slice(-50);
+          } else {
+            const emptyArr = new Array(49).fill(null);
+            newData[symbol] = [...emptyArr, ...aggregatedData[symbol]];
+          }
+        }
+        return newData;
+      });
+
+      // Clear the message queue
+      messageQueue.length = 0;
+    }
+    processingTimer = setTimeout(processQueuedMessages, 500);
+  }
+  let ws: any;
   function createWebSocket(selectedStocks: any, setHistoricalData: any) {
-    const ws = new WebSocket('ws://localhost:8080'); // Replace with your WebSocket URL
+    if (ws) {
+      ws.close();
+    }
+
+    ws = new WebSocket('ws://localhost:8080'); // Replace with your WebSocket URL
 
     ws.onopen = () => {
       console.log('WebSocket connection established');
@@ -44,9 +91,7 @@ function App() {
       ws.send(JSON.stringify(selectedStocks));
     };
 
-    const messageQueue: any[] = []; // Define a type for your messageQueue array
-
-    ws.onmessage = (event) => {
+    ws.onmessage = (event: any) => {
       // Handle incoming messages here
       if (typeof event.data === 'string') {
         const message: { [symbol: string]: number } = JSON.parse(event.data); // Define a type for your message object
@@ -54,63 +99,21 @@ function App() {
       }
     };
 
-    // Use a timer to process the messages after a delay
-    let processingTimer: NodeJS.Timeout | null = null; // Define a type for your timer
-
-    function processQueuedMessages() {
-      if (messageQueue.length > 0) {
-        // Aggregate data from all messages in the queue
-        const aggregatedData: { [symbol: string]: number[] } = {}; // Define a type for your aggregatedData object
-
-        for (const message of messageQueue) {
-          for (const symbol in message) {
-            if (!aggregatedData[symbol]) {
-              aggregatedData[symbol] = [];
-            }
-            aggregatedData[symbol].push(message[symbol]);
-          }
-        }
-
-        // Update your historicalData state with the aggregated data
-        setHistoricalData((prevData: any) => {
-          const newData = { ...prevData };
-          for (const symbol in aggregatedData) {
-            if (newData[symbol]) {
-              newData[symbol].push(...aggregatedData[symbol]);
-            } else {
-              const emptyArr = new Array(49).fill(null);
-              newData[symbol] = [...emptyArr, ...aggregatedData[symbol]];
-            }
-          }
-          return newData;
-        });
-
-        // Clear the message queue
-        messageQueue.length = 0;
-      }
-
-      // Set a new timer for the next processing cycle
-      processingTimer = setTimeout(processQueuedMessages, 500); // 500ms throttle duration
-    }
-
-    // Start the initial timer
-    processingTimer = setTimeout(processQueuedMessages, 500);
-
-    ws.onerror = (error) => {
+    ws.onerror = (error: any) => {
       console.error('WebSocket error:', error);
     };
 
-    ws.onclose = (event) => {
+    ws.onclose = (event: any) => {
       if (event.wasClean) {
         console.log(`WebSocket closed cleanly, code=${event.code}, reason=${event.reason}`);
       } else {
+        // If not closed cleanly, attempt reconnect;
         setShowErrorPopup(true);
         console.error(`WebSocket connection lost: code=${event.code}, reason=${event.reason}`);
-        // Implement your reconnection logic here
         setTimeout(() => {
           console.log('Reconnecting...');
-          createWebSocket(selectedStocks, setHistoricalData); // Attempt to create a new WebSocket connection
-        }, 3000); // Retry every 5 seconds (adjust as needed)
+          createWebSocket(selectedStocks, setHistoricalData);
+        }, 3000);
       }
     };
 
@@ -119,11 +122,11 @@ function App() {
 
   useEffect(() => {
     const ws = createWebSocket(selectedStocks, setHistoricalData);
-
+    setTimeout(processQueuedMessages, 500);
     return () => {
       ws.close();
     };
-  }, [selectedStocks, setHistoricalData]);
+  }, [selectedStocks]);
 
   return (
     <div className="App">

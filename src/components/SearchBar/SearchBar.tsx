@@ -31,9 +31,7 @@ const SearchBar = ({ handleAddResult, selectedStocks, stocks, setHistoricalData 
 
   const handleFocus = () => {
     setIsVisible(true);
-    console.log(stocks, 'stocks');
     const filteredStocks = stocks.filter((stock: any) => !selectedStocks.includes(stock.symbol));
-    console.log(filteredStocks);
     if (query === '') setSearchResults(filteredStocks);
   };
 
